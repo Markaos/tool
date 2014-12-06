@@ -26,15 +26,15 @@ if [ $1 = "--help" ]; then
 fi
 
 if [ -z "$TOOLS_PATH" ]; then
-  echo "Warning: variable TOOLS_DIR was not set, using default (/usr/tools)"
+  echo "Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
   echo "Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into "\
        "your ~/.bashrc or ~/.bash_profile to suppress this warning"
-  TOOLS_DIR="~/tools";
+  TOOLS_PATH="/usr/tools";
 fi
 
 args=$@
 args=${args/$0/""}
 args=${args/$1/""}
 
-epath=$(cat $_TOOLS_PATH/.config)
-"$TOOLS_DIR/tb-$epath/$1" $args
+epath=$(cat $TOOLS_PATH/.config)
+"$TOOLS_PATH/tb-$epath/$1" $args
