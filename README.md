@@ -7,7 +7,7 @@ Tool uses environment variable TOOLS_PATH for determine where to find .config
 file. It reads information about active toolbox from TOOLS_PATH/.config and then
 invokes file TOOLS_PATH/tb-ACTIVE_TOOLBOX/TOOL_NAME.
 
-##Before first use
+##Before First Use
 First you need to set up directory for toolboxes (in our example, we'll assume,
 that you've decided to place it to ~/tools) and first toolbox.
 
