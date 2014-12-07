@@ -8,7 +8,7 @@ file. It reads information about active toolbox from TOOLS_PATH/.config and then
 invokes file TOOLS_PATH/tb-ACTIVE_TOOLBOX/TOOL_NAME.
 
 ##Before First Use
-View [Before First Use](BeforeFirstUse.md) for more info
+Look at [Before First Use](BeforeFirstUse.md) for more info
 
 ##Usage
 First, copy executables you want to keep separate from your PATH to
@@ -26,3 +26,7 @@ directory for them and running
     $ toolbox new-toolbox-name
 
 Enjoy!
+
+##License
+All scripts here are licensed under GNU GPL v3 license (look at
+  [COPYING](COPYING) for more info)
