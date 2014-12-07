@@ -8,7 +8,7 @@ file. It reads information about active toolbox from TOOLS_PATH/.config and then
 executes file TOOLS_PATH/tb-ACTIVE_TOOLBOX/TOOL_NAME.
 
 ##Before First Use
-Look at [Before First Use](BeforeFirstUse.md) for more info
+See [Before First Use](BeforeFirstUse.md) for more info
 
 ##Usage
 First, copy executables you want to keep separate from your PATH to
@@ -28,5 +28,5 @@ directory for them and running
 Enjoy!
 
 ##License
-All scripts here are licensed under GNU GPL v3 license (look at
+All scripts here are licensed under GNU GPL v3 license (see
   [COPYING](COPYING) for more info)
