@@ -8,27 +8,21 @@ file. It reads information about active toolbox from TOOLS_PATH/.config and then
 invokes file TOOLS_PATH/tb-ACTIVE_TOOLBOX/TOOL_NAME.
 
 ##Before First Use
-First you need to set up directory for toolboxes (in our example, we'll assume,
-that you've decided to place it to ~/tools) and first toolbox.
+View [Before First Use](BeforeFirstUse.md) for more info
 
-    $ mkdir ~/tools
-    $ mkdir ~/tools/tb-test
+##Usage
+First, copy executables you want to keep separate from your PATH to
+TOOLS_PATH/tb-TOOLBOX_NAME (where TOOLBOX_NAME is name which you set via toolbox
+script in Before First Use).
 
-Open your ~/.bashrc or ~/.bash_profile and add this line to the end:
-
-    export TOOLS_PATH="/home/YOUR_USERNAME/tools"
-
-Two notes here:
-1. It is important to not include last slash to TOOLS_PATH
-2. For some reason you must use absolute path instead of ~/*
-
-Run
-
-    $ toolbox test
-
-to prepare .config file and set toolbox to tb-test (yes, it'll add tb- prefix).
-
-Now just copy executables, that you don't want in PATH, to ~/tools/tb-test and
-run them with
+After that, your toolbox is ready to use and you can run your binaries by
+running
 
     $ tool tool-name [arguments]
+
+And remember: you can simply switch between multiple toolboxes by making new
+directory for them and running
+
+    $ toolbox new-toolbox-name
+
+Enjoy!
