@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+if [ $# = 0 ]; then
+  echo "Tool needs at least one argument to run (type $0 --help for help)"
+  exit 1;
+fi
+
 if [ $1 = "--help" ]; then
   echo  "Tool is a command line utility to keep binaries outside the PATH,"\
         " but still easy accessible."
