@@ -10,9 +10,9 @@ _tb-TOOLBOX\_NAME_ where _TOOLBOX\_NAME_ is name of toolbox, so name of
 directory for toolbox _test_ should be _tb-test_.
 
 ##Usage
-First, copy executables you want to keep separate from your PATH to
-TOOLS_PATH/tb-TOOLBOX_NAME (where TOOLBOX_NAME is name which you set via toolbox
-script in Before First Use).
+First, copy executables you want to keep separate from your _PATH_ to
+_TOOLS\_PATH/tb-TOOLBOX\_NAME_ (where _TOOLBOX\_NAME_ is name which you set via
+toolbox script in Before First Use).
 
 After that, your toolbox is ready to use and you can run your binaries by
 running
