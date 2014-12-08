@@ -15,25 +15,71 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Translations
+
+if [ $LANGUAGE != "" ]; then
+  if [ $LANGUAGE = "cs_CZ" ]; then
+    too_few_arguments="Tool potřebuje k běhu alespoň jeden parametr (napište $0 --help pro nápovědu)"
+    tools_path_not_set="Varování: proměnná TOOLS_PATH není nastavena, používá se výchozí hodnota (/usr/tools)"
+    warning_tip="Tip: vložte 'export TOOLS_PATH=\"/cesta/ke/složce/nástrojů\"' do souboru ~/.bashrc nebo ~/.bash_profile pro potlačení tohoto varování";
+
+    print_help() {
+      echo  "Tool je terminálová utilita pro uchovávání spustitelných souborů "\
+            "mimo proměnnou PATH, ale stále lehce dostupné."
+      echo  "Syntax"
+      echo  "  $1 jméno-nástroje [argumenty] (pro spuštění jméno-nástroje s parametry parametry)"
+      echo  "  -- NEBO --"
+      echo  "  $1 --help (pro vypsání nápovědy)"
+    }
+  else
+    too_few_arguments="Tool needs at least one argument to run (type $0 --help for help)"
+    tools_path_not_set="Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
+    warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
+
+    print_help() {
+      echo  "Tool is a command line utility to keep binaries outside the "\
+            "PATH, but still easy accessible."
+      echo  "Syntax"
+      echo  "  $1 tool-name [arguments...] (to run tool-name with arguments as arguments)"
+      echo  "  -- OR --"
+      echo  "  $1 --help (to print this)"
+    }
+  fi;
+else
+  too_few_arguments="Tool needs at least one argument to run (type $0 --help for help)"
+  tools_path_not_set="Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
+  warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
+
+  print_help() {
+    echo  "Tool is a command line utility to keep binaries outside the "\
+          "PATH, but still easy accessible."
+    echo  "Syntax"
+    echo  "  $1 tool-name [arguments...] (to run tool-name with arguments as arguments)"
+    echo  "  -- OR --"
+    echo  "  $1 --help (to print this)"
+  }
+fi
+
+# Code
 if [ $# = 0 ]; then
-  echo "Tool needs at least one argument to run (type $0 --help for help)"
+  echo $too_few_arguments
   exit 1;
 fi
 
 if [ $1 = "--help" ]; then
-  echo  "Tool is a command line utility to keep binaries outside the PATH,"\
-        " but still easy accessible."
-  echo  "Synopsis"
-  echo  "  $0 tool-name [arguments...] (to run tool-name with arguments as arguments)"
-  echo  "  -- OR --"
-  echo  "  $0 --help (to print this)"
+  #echo  $help_info
+  #echo  $help_syntax
+  #echo  $help_1
+  #echo  $help_separator
+  #echo  $help_2
+  print_help $0
+
   exit 0;
 fi
 
-if [ -z "$TOOLS_PATH" ]; then
-  echo "Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
-  echo "Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into "\
-       "your ~/.bashrc or ~/.bash_profile to suppress this warning"
+if [ -z ${TOOLS_PATH+x} ]; then
+  echo $tools_path_not_set
+  echo $warning_tip
   TOOLS_PATH="/usr/tools";
 fi
 
