@@ -29,3 +29,5 @@ Enjoy!
 ##License
 All scripts here are licensed under GNU GPL v3 (see
   [COPYING](COPYING) for more info)
+
+[Czech translation / Český překlad](cz/README_CZ.md)
