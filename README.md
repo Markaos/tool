@@ -1,14 +1,13 @@
 #Tool
-Tool allows you to keep binaries separate from your PATH in toolboxes.
+Tool allows you to keep binaries separate from your _PATH_ in toolboxes.
 It comes with toolbox utility, which is intended to manage toolboxes.
 
 ##Configuration
-Tool uses environment variable TOOLS_PATH for determine where to find .config
-file. It reads information about active toolbox from TOOLS_PATH/.config and then
-executes file TOOLS_PATH/tb-ACTIVE_TOOLBOX/TOOL_NAME.
-
-##Before First Use
-See [Before First Use](BeforeFirstUse.md) for more info
+Tool uses environment variable _TOOLS\_PATH_ to store path of its directory. See
+[Before First Use](BeforeFirstUse.md) for more info about setup. After setup,
+TOOLS\_PATH directory will contain file _.config_ an toolbox directories named
+_tb-TOOLBOX\_NAME_ where _TOOLBOX\_NAME_ is name of toolbox, so name of
+directory for toolbox _test_ should be _tb-test_.
 
 ##Usage
 First, copy executables you want to keep separate from your PATH to
