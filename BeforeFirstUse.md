@@ -3,9 +3,10 @@ First, you need to set up directory for toolboxes and first toolbox. But before
 that you must decide where to place them. It should be easy accessible, for
 example ~/tools.
 
-Open your ~/.bashrc or ~/.bash_profile and add this line to the end:
+Open your ~/.bashrc or ~/.bash_profile and add line bellow to the end (replace
+/home/YOUR_USERNAME/tools with path to your selected directory):
 
-    export TOOLS_PATH="/path/to/tools/dir"
+    export TOOLS_PATH="/home/YOUR_USERNAME/tools"
 
 Two notes here:
 
