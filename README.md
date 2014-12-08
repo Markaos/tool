@@ -30,4 +30,5 @@ Enjoy!
 All scripts here are licensed under GNU GPL v3 (see
   [COPYING](COPYING) for more info)
 
+[Translations](Translations.md)
 [Czech translation / Český překlad](cz/README_CZ.md)
