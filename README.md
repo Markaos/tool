@@ -27,5 +27,5 @@ directory for them and running
 Enjoy!
 
 ##License
-All scripts here are licensed under GNU GPL v3 license (see
+All scripts here are licensed under GNU GPL v3 (see
   [COPYING](COPYING) for more info)
