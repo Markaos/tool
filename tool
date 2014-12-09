@@ -67,11 +67,6 @@ if [ $# = 0 ]; then
 fi
 
 if [ $1 = "--help" ]; then
-  #echo  $help_info
-  #echo  $help_syntax
-  #echo  $help_1
-  #echo  $help_separator
-  #echo  $help_2
   print_help $0
 
   exit 0;
