@@ -39,7 +39,7 @@ if [ $LANGUAGE != "" ]; then
       echo  "  $1 --help (pro vypsání nápovědy)"
     }
   else
-    return_code="Return code"
+    return_code="Return value"
     too_few_arguments="Tool needs at least one argument to run (type $0 --help for help)"
     tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
     warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
@@ -54,7 +54,7 @@ if [ $LANGUAGE != "" ]; then
     }
   fi;
 else
-  return_code="Return code"
+  return_code="Return value"
   too_few_arguments="Tool needs at least one argument to run (type $0 --help for help)"
   tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
   warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
@@ -94,6 +94,7 @@ args=${args/$1/""}
 epath=$(cat "$TOOLS_PATH/.config")
 "$TOOLS_PATH/tb-$epath/$1" $args
 
-if [ $? != 0 ]; then
-  echo "$return_code: $?";
+value=$?
+if [ $value != 0 ]; then
+  echo "$return_code: $value";
 fi
