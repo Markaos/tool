@@ -18,9 +18,15 @@
 # Translations
 
 if [ $LANGUAGE != "" ]; then
-  if [ $LANGUAGE = "cs_CZ" ]; then
+  if [ -e "$TOOLS_PATH/.lang" ]; then
+    lang=$(cat "$TOOLS_PATH/.lang");
+  else
+    lang=$LANGUAGE;
+  fi
+
+  if [ $lang = "cs_CZ" ]; then
     too_few_arguments="Tool potřebuje k běhu alespoň jeden parametr (napište $0 --help pro nápovědu)"
-    tools_path_not_set="Varování: proměnná TOOLS_PATH není nastavena, používá se výchozí hodnota (/usr/tools)"
+    tools_path_not_set="Varování: proměnná TOOLS_PATH není nastavena (nebo je prázdná), používá se výchozí hodnota (/usr/tools)"
     warning_tip="Tip: vložte 'export TOOLS_PATH=\"/cesta/ke/složce/nástrojů\"' do souboru ~/.bashrc nebo ~/.bash_profile pro potlačení tohoto varování";
 
     print_help() {
@@ -33,7 +39,7 @@ if [ $LANGUAGE != "" ]; then
     }
   else
     too_few_arguments="Tool needs at least one argument to run (type $0 --help for help)"
-    tools_path_not_set="Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
+    tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
     warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
 
     print_help() {
@@ -47,7 +53,7 @@ if [ $LANGUAGE != "" ]; then
   fi;
 else
   too_few_arguments="Tool needs at least one argument to run (type $0 --help for help)"
-  tools_path_not_set="Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
+  tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
   warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
 
   print_help() {
@@ -67,17 +73,12 @@ if [ $# = 0 ]; then
 fi
 
 if [ $1 = "--help" ]; then
-  #echo  $help_info
-  #echo  $help_syntax
-  #echo  $help_1
-  #echo  $help_separator
-  #echo  $help_2
   print_help $0
 
   exit 0;
 fi
 
-if [ -z ${TOOLS_PATH+x} ]; then
+if [ -z "$TOOLS_PATH" ]; then
   echo $tools_path_not_set
   echo $warning_tip
   TOOLS_PATH="/usr/tools";
@@ -87,5 +88,5 @@ args=$@
 args=${args/$0/""}
 args=${args/$1/""}
 
-epath=$(cat $TOOLS_PATH/.config)
+epath=$(cat "$TOOLS_PATH/.config")
 "$TOOLS_PATH/tb-$epath/$1" $args

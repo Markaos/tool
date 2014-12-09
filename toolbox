@@ -18,9 +18,15 @@
 # Translations
 
 if [ $LANGUAGE != "" ]; then
-  if [ $LANGUAGE = "cs_CZ" ]; then
+  if [ -e "$TOOLS_PATH/.lang" ]; then
+    lang=$(cat "$TOOLS_PATH/.lang");
+  else
+    lang=$LANGUAGE;
+  fi
+
+  if [ $lang = "cs_CZ" ]; then
     toolbox_active="Aktivní toolbox"
-    tools_path_not_set="Varování: proměnná TOOLS_PATH není nastavena, používá se výchozí hodnota (/usr/tools)"
+    tools_path_not_set="Varování: proměnná TOOLS_PATH není nastavena (nebo je prázdná), používá se výchozí hodnota (/usr/tools)"
     warning_tip="Tip: vložte 'export TOOLS_PATH=\"/cesta/ke/složce/nástrojů\"' do souboru ~/.bashrc nebo ~/.bash_profile pro potlačení tohoto varování";
 
     print_help() {
@@ -34,7 +40,7 @@ if [ $LANGUAGE != "" ]; then
     }
   else
     toolbox_active="Toolbox in use"
-    tools_path_not_set="Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
+    tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
     warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
 
     print_help() {
@@ -49,7 +55,7 @@ if [ $LANGUAGE != "" ]; then
   fi;
 else
   toolbox_active="Toolbox in use"
-  tools_path_not_set="Warning: variable TOOLS_PATH was not set, using default (/usr/tools)"
+  tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
   warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
 
   print_help() {
@@ -75,7 +81,13 @@ if [ -z "$TOOLS_PATH" ]; then
 fi
 
 if [ $# = 0 ]; then
-  echo "$toolbox_active: "$(cat $TOOLS_PATH/.config);
+  echo "$toolbox_active: "$(cat "$TOOLS_PATH/.config");
 else
-  echo $1 >$TOOLS_PATH/.config;
+  if [ $1 == "--set-language" ]; then
+    if [ $# = 2 ]; then
+      echo $2 >"$TOOLS_PATH/.lang";
+    fi;
+  else
+    echo $1 >"$TOOLS_PATH/.config";
+  fi;
 fi
