@@ -87,6 +87,8 @@ else
     if [ $# = 2 ]; then
       echo $2 >"$TOOLS_PATH/.lang";
     fi;
+  elif [ $1 == "--moo" ]; then
+    echo "Mooo...";
   else
     echo $1 >"$TOOLS_PATH/.config";
   fi;
