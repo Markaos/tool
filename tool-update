@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Copyright (C) 2014 Marek Černoch
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ $# = 0 ]; then
+  echo "Too few arguments, run $0 --help for more info";
+  exit 1;
+elif [ $# = 1 ] && [ $1 = "--help" ]; then
+  echo  "Tool-update is intended to be update tool for tool :-)"
+  echo  "Note: scripts tool and toolbox will be downloaded to directory"\
+        "with this script."
+  echo  "Syntax"
+  echo  "  $0 check (to check for new version, stable only)"
+  echo  "  -- OR --"
+  echo  "  $0 check any (to check for newest version)"
+  echo  "  -- OR --"
+  echo  "  $0 update (to update to newest stable version)"
+  echo  "  -- OR --"
+  echo  "  $0 update any (to update to newest version)"
+  echo  "  -- OR --"
+  echo  "  $0 --help (to print this help)";
+elif [ $1 = "check" ]; then
+  if [ $# = 2 ]; then
