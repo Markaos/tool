@@ -51,7 +51,7 @@ elif [ $1 = "check" ]; then
 
     rm -f $tmpfile;
   else
-    url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
+    url="https://raw.githubusercontent.com/Markaos/tool/tool-update/version"
     tmpfile="/tmp/tool-update-check"
     wget $url -O - >$tmpfile
     version_new=$(cat $tmpfile)
@@ -83,7 +83,7 @@ elif [ $1 = "update" ]; then
     wget $url -O - >$tmpfile
     version_new=$(cat $tmpfile)
 
-    url_pack="https://github.com/Markaos/tool/archive/$version_new.tar.gz"
+    url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
     wget $url_pack -O - >$tmpfile
     cd $dir
     echo "Extracting to $dir..."
@@ -100,12 +100,12 @@ elif [ $1 = "update" ]; then
     done
     dir="$( cd -P "$( dirname "$src" )" && pwd )"
 
-    url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
+    url="https://raw.githubusercontent.com/Markaos/tool/tool-update/version"
     tmpfile="/tmp/tool-update-package.tar.gz"
     wget $url -O - >$tmpfile
     version_new=$(cat $tmpfile)
 
-    url_pack="https://github.com/Markaos/tool/archive/$version_new.tar.gz"
+    url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
     wget $url_pack -O - >$tmpfile
     cd $dir
     echo "Extracting to $dir..."
