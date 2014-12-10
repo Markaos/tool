@@ -1,0 +1,207 @@
+#!/bin/bash
+
+# Copyright (C) 2014 Marek Černoch
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ $# = 0 ]; then
+  echo "Too few arguments, run $0 --help for more info";
+  exit 1;
+elif [ $# = 1 ] && [ $1 = "--help" ]; then
+  echo  "Tool-update is intended to be update tool for tool :-)"
+  echo  "Note: scripts tool and toolbox will be downloaded to directory"\
+        "with this script."
+  echo  "Syntax"
+  echo  "  $0 check (to check for new version, stable only)"
+  echo  "  -- OR --"
+  echo  "  $0 check any (to check for newest version)"
+  echo  "  -- OR --"
+  echo  "  $0 update (to update to newest stable version)"
+  echo  "  -- OR --"
+  echo  "  $0 update any (to update to newest version)"
+  echo  "  -- OR --"
+  echo  "  $0 --help (to print this help)";
+elif [ $1 = "check" ]; then
+  if [ $# = 1 ]; then
+    #url="https://github.com/Markaos/tool/releases/tag/v0.3-beta.1"
+    url="https://raw.githubusercontent.com/Markaos/tool/master/version"
+    tmpfile="/tmp/tool-update-check"
+    wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+
+    version_new=$(cat $tmpfile)
+    version_old=$(cat $TOOLS_PATH/.version)
+
+    if [ "$version_old" = "$version_new" ]; then
+      echo "Your version $version_old is last stable (it's up-to-date)"
+      exit 0;
+    else
+      echo "Your version $version_old is obsolete. Newest stable version is $version_new"
+      exit 0;
+    fi
+
+    rm -f $tmpfile;
+  else
+    url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
+    tmpfile="/tmp/tool-update-check"
+    wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    version_new=$(cat $tmpfile)
+    version_old=$(cat $TOOLS_PATH/.version)
+
+    if [ "$version_old" = "$version_new" ]; then
+      echo "Your version $version_old is last version (it's up-to-date)"
+      exit 0;
+    else
+      echo "Your version $version_old is obsolete. Newest beta version is $version_new"
+      exit 0;
+    fi
+
+    rm -f $tmpfile;
+  fi;
+elif [ $1 = "update" ]; then
+  if [ $# = 1 ]; then
+    src="${BASH_SOURCE[0]}"
+
+    while [ -h "$src" ]; do
+      dir="$( cd -P "$( dirname "$src" )" && pwd )"
+      src="$(readlink "$src")"
+      [[ $src != /* ]] && src="$dir/$src"
+    done
+    dir="$( cd -P "$( dirname "$src" )" && pwd )"
+
+    url="https://raw.githubusercontent.com/Markaos/tool/master/version"
+    tmpfile="/tmp/tool-update-package.tar.gz"
+    tmpdir="/tmp/tool-update-dir"
+    wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    version_new=$(cat $tmpfile)
+
+    url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
+    wget $url_pack -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cd $dir
+    mkdir $tmpdir
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cd $tmpdir
+    echo "Extracting to $tmpdir..."
+    tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+
+    echo "Moving to $dir..."
+    cd $dir
+    cp "$tmpdir/tool-$version_new/tool" "./tool"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cp "$tmpdir/tool-$version_new/toolbox" "./toolbox"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cp "$tmpdir/tool-$version_new/tool-update" "./tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    rm -rf $tmpdir
+    rm -f $tmpfile
+
+    echo "$version_new" >$TOOLS_PATH/.version
+    echo "Up-to-date!"
+    exit 0;
+  else
+    src="${BASH_SOURCE[0]}"
+
+    while [ -h "$src" ]; do
+      dir="$( cd -P "$( dirname "$src" )" && pwd )"
+      src="$(readlink "$src")"
+      [[ $src != /* ]] && src="$dir/$src"
+    done
+    dir="$( cd -P "$( dirname "$src" )" && pwd )"
+
+    url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
+    tmpfile="/tmp/tool-update-package.tar.gz"
+    tmpdir="/tmp/tool-update-dir"
+    wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+
+    version_new=$(cat $tmpfile)
+
+    url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
+    wget $url_pack -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    mkdir $tmpdir
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cd $tmpdir
+    echo "Extracting to $tmpdir..."
+    tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+
+    echo "Moving to $dir..."
+    cd $dir
+    cp "$tmpdir/tool-$version_new/tool" "./tool"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cp "$tmpdir/tool-$version_new/toolbox" "./toolbox"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    cp "$tmpdir/tool-$version_new/tool-update" "./tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+    rm -rf $tmpdir
+    rm -f $tmpfile
+
+    echo "$version_new" >$TOOLS_PATH/.version
+    echo "Up-to-date!"
+    exit 0;
+  fi
+fi

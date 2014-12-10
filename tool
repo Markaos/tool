@@ -17,13 +17,24 @@
 
 # Translations
 
-if [ $LANGUAGE != "" ]; then
-  if [ -e "$TOOLS_PATH/.lang" ]; then
-    lang=$(cat "$TOOLS_PATH/.lang");
-  else
-    lang=$LANGUAGE;
-  fi
+if [ -z "$TOOLS_PATH" ]; then
+  echo $tools_path_not_set
+  echo $warning_tip
+  TOOLS_PATH="/usr/tools";
+fi
 
+if [ -e "$TOOLS_PATH/.lang" ]; then
+  lang=$(cat "$TOOLS_PATH/.lang");
+  src="file";
+elif [ -z "$LANGUAGE" ]; then
+  lang=$LANGUAGE
+  src="system";
+else
+  lang="en_US"
+  src="default";
+fi
+
+if [ $lang != "" ]; then
   if [ $lang = "cs_CZ" ]; then
     return_code="Návratová hodnota"
     too_few_arguments="Tool potřebuje k běhu alespoň jeden parametr (napište $0 --help pro nápovědu)"
@@ -79,12 +90,6 @@ if [ $1 = "--help" ]; then
   print_help $0
 
   exit 0;
-fi
-
-if [ -z "$TOOLS_PATH" ]; then
-  echo $tools_path_not_set
-  echo $warning_tip
-  TOOLS_PATH="/usr/tools";
 fi
 
 args=$@

@@ -17,31 +17,69 @@
 
 # Translations
 
-if [ $LANGUAGE != "" ]; then
-  if [ -e "$TOOLS_PATH/.lang" ]; then
-    lang=$(cat "$TOOLS_PATH/.lang");
-  else
-    lang=$LANGUAGE;
-  fi
+if [ -z "$TOOLS_PATH" ]; then
+  echo $tools_path_not_set
+  echo $warning_tip
+  TOOLS_PATH="/usr/tools";
+fi
+
+if [ -e "$TOOLS_PATH/.lang" ]; then
+  lang=$(cat "$TOOLS_PATH/.lang");
+  src="file";
+elif [ -z "$LANGUAGE" ]; then
+  lang=$LANGUAGE
+  src="system";
+else
+  lang="en_US"
+  src="default";
+fi
+
+if [ $lang != "" ]; then
 
   if [ $lang = "cs_CZ" ]; then
+    active_lang="Aktivní jazyk"
+    from="ze"
     toolbox_active="Aktivní toolbox"
     tools_path_not_set="Varování: proměnná TOOLS_PATH není nastavena (nebo je prázdná), používá se výchozí hodnota (/usr/tools)"
     warning_tip="Tip: vložte 'export TOOLS_PATH=\"/cesta/ke/složce/nástrojů\"' do souboru ~/.bashrc nebo ~/.bash_profile pro potlačení tohoto varování";
+
+    if [ $src = "file" ]; then
+      source="souboru";
+    elif [ $src = "system" ]
+      source="systému";
+    else
+      source="skriptu";
+    fi
 
     print_help() {
       echo  "Toolbox je terminálová utilita pro nastavení toolboxu"\
       echo  "Syntax"
       echo  "  $1 (pro vypsání aktivního toolboxu)"
-      echo  "  -- OR --"
+      echo  "  -- NEBO --"
       echo  "  $1 new-toolbox (pro nastavení aktivního toolboxu)"
-      echo  "  -- OR --"
+      echo  "  -- NEBO --"
+      echo  "  $1 --set-language jazyk (pro nastavení jazyka)"
+      echo  "  -- NEBO --"
+      echo  "  $1 --get-language (pro vypsání nastaveného jazyka, včetně zdroje)"
+      echo  "  -- NEBO --"
+      echo  "  $1 --reset-language (pro obnovení původního chování volby jazyka)"
+      echo  "  -- NEBO --"
       echo  "  $1 --help (pro vypsání nápovědy)"
     }
   else
+    active_lang="Active language"
+    from="from"
     toolbox_active="Toolbox in use"
     tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
     warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
+
+    if [ $src = "file" ]; then
+      source="file";
+    elif [ $src = "system" ]
+      source="system";
+    else
+      source="script";
+    fi
 
     print_help() {
       echo  "Toolbox is a command line utility to set binaries directory for tool"
@@ -50,13 +88,29 @@ if [ $LANGUAGE != "" ]; then
       echo  "  -- OR --"
       echo  "  $1 new-toolbox (to set active toolbox)"
       echo  "  -- OR --"
+      echo  "  $1 --set-language language (to set language)"
+      echo  "  -- OR --"
+      echo  "  $1 --get-language (to print language, with source)"
+      echo  "  -- OR --"
+      echo  "  $1 --reset-language (to restore default language selector)"
+      echo  "  -- OR --"
       echo  "  $1 --help (to print this)"
     }
   fi;
 else
+  active_lang="Active language"
+  from="from"
   toolbox_active="Toolbox in use"
   tools_path_not_set="Warning: variable TOOLS_PATH was not set (or is empty), using default (/usr/tools)"
   warning_tip="Tip: you can place 'export TOOLS_PATH=\"/path/to/tools/dir\"' into your ~/.bashrc or ~/.bash_profile to suppress this warning";
+
+  if [ $src = "file" ]; then
+    source="file";
+  elif [ $src = "system" ]
+    source="system";
+  else
+    source="script";
+  fi
 
   print_help() {
     echo  "Toolbox is a command line utility to set binaries directory for tool"
@@ -64,6 +118,12 @@ else
     echo  "  $1 (to print active toolbox name)"
     echo  "  -- OR --"
     echo  "  $1 new-toolbox (to set active toolbox)"
+    echo  "  -- OR --"
+    echo  "  $1 --set-language language (to set language)"
+    echo  "  -- OR --"
+    echo  "  $1 --get-language (to print language, with source)"
+    echo  "  -- OR --"
+    echo  "  $1 --reset-language (to restore default language selector)"
     echo  "  -- OR --"
     echo  "  $1 --help (to print this)"
   }
@@ -74,20 +134,18 @@ if [ $# = 1 ] && [ $1 = "--help" ]; then
   exit 0;
 fi
 
-if [ -z "$TOOLS_PATH" ]; then
-  echo $tools_path_not_set
-  echo $warning_tip
-  TOOLS_PATH="/usr/tools";
-fi
-
 if [ $# = 0 ]; then
   echo "$toolbox_active: "$(cat "$TOOLS_PATH/.config");
 else
-  if [ $1 == "--set-language" ]; then
+  if [ $1 = "--set-language" ]; then
     if [ $# = 2 ]; then
       echo $2 >"$TOOLS_PATH/.lang";
     fi;
-  elif [ $1 == "--moo" ]; then
+  elif [ $1 = "--get-language" ]; then
+    echo "$active_lang: $lang ($from $source)";
+  elif [ $1 = "--reset-language" ]; then
+    rm -f "$TOOLS_PATH/.lang"
+  elif [ $1 = "--moo" ]; then
     echo "Mooo...";
   else
     echo $1 >"$TOOLS_PATH/.config";
