@@ -1,7 +1,7 @@
 #Translations
 Scripts now automatically choose language (at this moment only English and
-Czech) Its decision is based on contents of file TOOLS\_PATH/.lang or LANGUAGE
-environment variable.
+Czech). Their decision is based on contents of file TOOLS\_PATH/.lang or
+LANGUAGE environment variable.
 
 ##How to force language
 If you want to use different language for system and different for those
