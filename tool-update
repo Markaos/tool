@@ -38,6 +38,11 @@ elif [ $1 = "check" ]; then
     url="https://raw.githubusercontent.com/Markaos/tool/master/version"
     tmpfile="/tmp/tool-update-check"
     wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+
     version_new=$(cat $tmpfile)
     version_old=$(cat $TOOLS_PATH/.version)
 
@@ -54,6 +59,10 @@ elif [ $1 = "check" ]; then
     url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
     tmpfile="/tmp/tool-update-check"
     wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     version_new=$(cat $tmpfile)
     version_old=$(cat $TOOLS_PATH/.version)
 
@@ -82,24 +91,53 @@ elif [ $1 = "update" ]; then
     tmpfile="/tmp/tool-update-package.tar.gz"
     tmpdir="/tmp/tool-update-dir"
     wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     version_new=$(cat $tmpfile)
 
     url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
     wget $url_pack -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cd $dir
     mkdir $tmpdir
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cd $tmpdir
     echo "Extracting to $tmpdir..."
     tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
 
     echo "Moving to $dir..."
     cd $dir
     cp "$tmpdir/tool-$version_new/tool" "./tool"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cp "$tmpdir/tool-$version_new/toolbox" "./toolbox"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cp "$tmpdir/tool-$version_new/tool-update" "./tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     rm -rf $tmpdir
     rm -f $tmpfile
 
+    echo "$version_new" >$TOOLS_PATH/.version
     echo "Up-to-date!"
     exit 0;
   else
@@ -116,23 +154,53 @@ elif [ $1 = "update" ]; then
     tmpfile="/tmp/tool-update-package.tar.gz"
     tmpdir="/tmp/tool-update-dir"
     wget $url -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
+
     version_new=$(cat $tmpfile)
 
     url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
     wget $url_pack -O - >$tmpfile
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     mkdir $tmpdir
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cd $tmpdir
     echo "Extracting to $tmpdir..."
     tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
 
     echo "Moving to $dir..."
     cd $dir
     cp "$tmpdir/tool-$version_new/tool" "./tool"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cp "$tmpdir/tool-$version_new/toolbox" "./toolbox"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     cp "$tmpdir/tool-$version_new/tool-update" "./tool-update"
+    if [ $? != 0 ]; then
+      echo "Aborting."
+      exit 1;
+    fi
     rm -rf $tmpdir
     rm -f $tmpfile
 
+    echo "$version_new" >$TOOLS_PATH/.version
     echo "Up-to-date!"
     exit 0;
   fi
