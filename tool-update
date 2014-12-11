@@ -31,6 +31,8 @@ elif [ $# = 1 ] && [ $1 = "--help" ]; then
   echo  "  -- OR --"
   echo  "  $0 update any (to update to newest version)"
   echo  "  -- OR --"
+  echo  "  $0 version (to print version)"
+  echo  "  -- OR --"
   echo  "  $0 --help (to print this help)";
 elif [ $1 = "check" ]; then
   if [ $# = 1 ]; then
@@ -216,4 +218,6 @@ elif [ $1 = "update" ]; then
     echo "Up-to-date!"
     exit 0;
   fi
+elif [ $1 = "version" ]; then
+  cat $TOOLS_PATH/.version;
 fi
