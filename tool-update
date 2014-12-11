@@ -109,16 +109,17 @@ elif [ $1 = "update" ]; then
       exit 1;
     fi
     echo "Downloaded."
-    
+
     cd $dir
     mkdir $tmpdir
     if [ $? != 0 ]; then
+      rm -rf $tmpdir
       echo "Aborting."
       exit 1;
     fi
     cd $tmpdir
     echo "Extracting to $tmpdir..."
-    tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update"
+    tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update" >/dev/null
     if [ $? != 0 ]; then
       echo "Aborting."
       exit 1;
@@ -179,12 +180,13 @@ elif [ $1 = "update" ]; then
     fi
     mkdir $tmpdir
     if [ $? != 0 ]; then
+      rm -rf $tmpdir
       echo "Aborting."
       exit 1;
     fi
     cd $tmpdir
     echo "Extracting to $tmpdir..."
-    tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update"
+    tar -zxvf $tmpfile "tool-$version_new/tool" "tool-$version_new/toolbox" "tool-$version_new/tool-update" >/dev/null
     if [ $? != 0 ]; then
       echo "Aborting."
       exit 1;
