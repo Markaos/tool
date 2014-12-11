@@ -29,7 +29,7 @@ Enjoy!
 ##Updates
 New tool for updating your tools for managing toolboxes was introduced in
 0.3-beta.1 for testing and later in 0.3 as stable tool. At this moment, I
-strongly recommend using release 0.4-beta, because it has better updater
+strongly recommend using release 0.4-beta.1, because it has better updater
 (it is the only difference between it and release 0.3)
 
 ##License
