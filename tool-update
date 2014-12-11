@@ -37,7 +37,8 @@ elif [ $1 = "check" ]; then
     #url="https://github.com/Markaos/tool/releases/tag/v0.3-beta.1"
     url="https://raw.githubusercontent.com/Markaos/tool/master/version"
     tmpfile="/tmp/tool-update-check"
-    wget $url -O - >$tmpfile
+    echo "Getting latest version info..."
+    wget -q $url -O - >$tmpfile
     if [ $? != 0 ]; then
       echo "Aborting."
       exit 1;
@@ -58,7 +59,8 @@ elif [ $1 = "check" ]; then
   else
     url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
     tmpfile="/tmp/tool-update-check"
-    wget $url -O - >$tmpfile
+    echo "Getting latest version info..."
+    wget -q $url -O - >$tmpfile
     if [ $? != 0 ]; then
       echo "Aborting."
       exit 1;
@@ -90,7 +92,8 @@ elif [ $1 = "update" ]; then
     url="https://raw.githubusercontent.com/Markaos/tool/master/version"
     tmpfile="/tmp/tool-update-package.tar.gz"
     tmpdir="/tmp/tool-update-dir"
-    wget $url -O - >$tmpfile
+    echo "Getting latest version info..."
+    wget -q $url -O - >$tmpfile
     if [ $? != 0 ]; then
       echo "Aborting."
       exit 1;
@@ -98,11 +101,15 @@ elif [ $1 = "update" ]; then
     version_new=$(cat $tmpfile)
 
     url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
-    wget $url_pack -O - >$tmpfile
+    echo "Downloading latest version from $url_pack..."
+    wget -q $url_pack -O - >$tmpfile
     if [ $? != 0 ]; then
+      echo "Download failed."
       echo "Aborting."
       exit 1;
     fi
+    echo "Downloaded."
+    
     cd $dir
     mkdir $tmpdir
     if [ $? != 0 ]; then
@@ -153,7 +160,8 @@ elif [ $1 = "update" ]; then
     url="https://raw.githubusercontent.com/Markaos/tool/dev/version"
     tmpfile="/tmp/tool-update-package.tar.gz"
     tmpdir="/tmp/tool-update-dir"
-    wget $url -O - >$tmpfile
+    echo "Getting latest version info..."
+    wget -q $url -O - >$tmpfile
     if [ $? != 0 ]; then
       echo "Aborting."
       exit 1;
@@ -162,8 +170,10 @@ elif [ $1 = "update" ]; then
     version_new=$(cat $tmpfile)
 
     url_pack="https://github.com/Markaos/tool/archive/v$version_new.tar.gz"
-    wget $url_pack -O - >$tmpfile
+    echo "Downloading latest version from $url_pack..."
+    wget -q $url_pack -O - >$tmpfile
     if [ $? != 0 ]; then
+      echo "Download failed."
       echo "Aborting."
       exit 1;
     fi
