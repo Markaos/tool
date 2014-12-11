@@ -16,9 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 if [ -z "$TOOLS_PATH" ]; then
-  if [ $# > 0 ] && [ $1 != "--help" ]; then
+  if [ $# != 0 ] && [ $1 != "--help" ]; then
     echo  "Warning: environment variable TOOLS_PATH was not set. Tool-update"\
-          "cannot work without it! For more info try toolbox --help" >2
+          "cannot work without it! For more info try toolbox --help"
     exit 1;
   fi;
 fi
